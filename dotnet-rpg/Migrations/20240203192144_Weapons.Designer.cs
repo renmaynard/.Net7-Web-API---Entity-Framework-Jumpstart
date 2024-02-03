@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dotnet_rpg.Data;
 
@@ -11,9 +12,11 @@ using dotnet_rpg.Data;
 namespace dotnetrpg.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240203192144_Weapons")]
+    partial class Weapons
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,51 +60,6 @@ namespace dotnetrpg.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Characters");
-                });
-
-            modelBuilder.Entity("dotnet_rpg.Models.Skill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CharacterId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Damage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CharacterId");
-
-                    b.ToTable("Skills");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Damage = 10,
-                            Name = "Fireball"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Damage = 50,
-                            Name = "Sage Mode"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Damage = 100,
-                            Name = "Susano"
-                        });
                 });
 
             modelBuilder.Entity("dotnet_rpg.Models.User", b =>
@@ -164,13 +122,6 @@ namespace dotnetrpg.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("dotnet_rpg.Models.Skill", b =>
-                {
-                    b.HasOne("Models.Character", null)
-                        .WithMany("Skills")
-                        .HasForeignKey("CharacterId");
-                });
-
             modelBuilder.Entity("dotnet_rpg.Models.Weapon", b =>
                 {
                     b.HasOne("Models.Character", "Character")
@@ -184,8 +135,6 @@ namespace dotnetrpg.Migrations
 
             modelBuilder.Entity("Models.Character", b =>
                 {
-                    b.Navigation("Skills");
-
                     b.Navigation("Weapon");
                 });
 
